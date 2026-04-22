@@ -123,8 +123,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="FileName.cpp" />
-    <ClCompile Include="test file.cpp" />
+    <ClCompile Include="Test file.cpp" />
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DateTime.h" />
+    <ClInclude Include="Payment.h" />
+    <ClInclude Include="Person.h" />
+    <ClInclude Include="Seat.h" />
+    <ClInclude Include="Vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

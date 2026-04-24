@@ -4,13 +4,53 @@ protected:
     string name;
     string email;
     string passwordHash;
+    string decrypter()
+    {
+        string decrypted="";
+        for (int i = 0; i < passwordHash.length(); i++)
+        {
+            decrypted += (char)(passwordHash[i] - i);
+        }
+        return decrypted;
+    }
+    
 public:
-    Person(string name, string email, string passwordHash) : name(name), email(email), passwordHash(passwordHash) {}
-    void login() {
-        cout << name << " logged in.\n";
+    string encrypter(string pass)
+    {
+        string encrypted="";
+        for (int i = 0; i < pass.length(); i++)
+        {
+            encrypted += (char)(pass[i] + i);
+        }
+        return encrypted;
+    }
+    Person(string name, string email, string password) : name(name), email(email)
+    {
+        passwordHash=encrypter(password);
+    }
+    bool login(string input)
+    {
+        if (input == decrypter())
+        {
+            cout << name << " logged in.\n";
+            return 1;
+        }
+        else return 0;
     }
     void logout() {
         cout << name << " logged out.\n";
+    }
+    string getHash()
+    {
+        return passwordHash;
+    }
+    string getname()
+    {
+        return name;
+    }
+    virtual void updatePassword(string newpass)
+    {
+        passwordHash = encrypter(newpass);
     }
     virtual void authenticate() = 0;  // pure virtual so now Person is abstract
     virtual ~Person() {}  // virtual destructor cuz its base class

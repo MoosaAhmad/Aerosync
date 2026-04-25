@@ -73,6 +73,7 @@ public:
         }
         return res;
     }
+   
     //...........
     //  Getters
     //...........
@@ -98,5 +99,12 @@ public:
         case FlightStatus::Arrived:   return "Arrived";
         }
         return "Unknown";
+    }
+    
+    // to be used by user class
+    void displayStatus()
+    {
+        string temp = statusToString(status);
+        cout << "Status : " << temp << endl;
     }
 };

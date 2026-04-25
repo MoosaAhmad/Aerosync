@@ -1,24 +1,41 @@
 #pragma once
 
 class Seat {
+public:
+    enum class SeatClass{
+        Economy,
+        Business
+    };
 private:
     string seatNumber;
-    string seatClass;
+    SeatClass seatClass;
     bool isAvailable;
     double price;
 
 public:
-    Seat(string seatNumber, string seatClass, double price)
+    //....................
+    // Ctor & Assignment
+    //....................
+    Seat(string seatNumber, SeatClass seatClass, double price)
         : seatNumber(seatNumber), seatClass(seatClass),
         price(price), isAvailable(true) {
     }
-
+    Seat& operator = (const Seat& other) {
+        if (this != &other) {
+            seatNumber = other.seatNumber;
+            seatClass = other.seatClass;
+            isAvailable = other.isAvailable;
+            price = other.isAvailable;
+        }
+        return *this;
+    }
+    //...........
     // Methods
-
+    //...........
     bool reserve() {
         if (!isAvailable) {
             cout << "Seat " << seatNumber << " is already reserved.\n";
-            return false;
+            return false;// already booked
         }
         isAvailable = false;
         cout << "Seat " << seatNumber << " reserved successfully.\n";
@@ -27,20 +44,30 @@ public:
     bool release() {
         if (isAvailable) {
             cout << "Seat " << seatNumber << " is already available.\n";
-            return false;
+            return false; // already reserved
         }
         isAvailable = true;
         cout << "Seat " << seatNumber << " released successfully.\n";
         return true;
     }
 
-    // Getters 
-
+    //...........
+    // Getters
+    //...........
     double getPrice() const {
         return price;
     }
+
+    static string classToString(SeatClass seatclas) {
+        switch (seatclas) {
+        case SeatClass::Economy: return "Economy";
+        case SeatClass::Business: return "Business";
+        }
+        return "Unknown";
+    }
+
     // likely needed by Flight/Booking
-    string getSeatNumber()  const { return seatNumber; }
-    string getSeatClass()   const { return seatClass; }
-    bool   getIsAvailable() const { return isAvailable; }
+    string   getSeatNumber()  const { return seatNumber; }
+    SeatClass getSeatClass()  const { return seatClass; }
+    bool    getIsAvailable()  const { return isAvailable; }
 };

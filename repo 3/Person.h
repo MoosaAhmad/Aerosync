@@ -1,4 +1,9 @@
 #pragma once
+#include <string>
+#include<iostream>
+
+using namespace std;
+
 class Person {
 protected:
     string name;
@@ -52,6 +57,6 @@ public:
     {
         passwordHash = encrypter(newpass);
     }
-    virtual void authenticate() = 0;  // pure virtual so now Person is abstract
+    //virtual void authenticate() = 0;  // pure virtual so now Person is abstract
     virtual ~Person() {}  // virtual destructor cuz its base class
 };

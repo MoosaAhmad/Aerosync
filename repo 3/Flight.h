@@ -1,4 +1,6 @@
 #pragma once
+#include "DateTime.h"
+#include "Vector.h";
 class Flight {
 public:
     enum class FlightStatus {

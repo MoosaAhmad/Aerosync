@@ -48,8 +48,8 @@ public:
 		status = "Confirmed";
 		seat->reserve();
 		cout << "Dear " << User->getname();
-		cout << ",your boking with Id"<<bookingId<<" is confirmed. \n";
-		cout << "Seat:" << seat->getSeatNumber() << "reserved"<<endl;
+		cout << ",your boking with Id "<<bookingId<<" is confirmed. \n";
+		cout << "Seat: " << seat->getSeatNumber() << "reserved"<<endl;
 		
 	}
 	double calcRefund()

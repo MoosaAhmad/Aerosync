@@ -135,6 +135,7 @@
     <ClInclude Include="Flight.h" />
     <ClInclude Include="Payment.h" />
     <ClInclude Include="Person.h" />
+    <ClInclude Include="Receipt.h" />
     <ClInclude Include="Seat.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>

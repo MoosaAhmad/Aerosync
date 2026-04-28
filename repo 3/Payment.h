@@ -1,4 +1,6 @@
 #pragma once
+
+class Booking; // forward declaration to avoid circular include
 class Payment {
 protected:
     string transactionId;
@@ -45,7 +47,8 @@ public:
 
         if (verifyPayment()) {
             string rId = "REC-" + transactionId;
-            DateTime currentTime;
+                
+          DateTime currentTime;
 
             // Creating a "Receipt" class object.
             // We use 'this' to pass the current Payment object as a pointer (Payment*)
@@ -61,4 +64,10 @@ public:
             cout << "Cannot generate receipt. Payment verification failed.\n";
         }
     }
+
+     // Getters (used by Receipt) 
+    string getTransactionId()  const { return transactionId; }
+    double getAmount()         const { return amount; }
+    string getBankName()       const { return bankName; }
+    string getPaymentMethod()  const { return paymentMethod; }
 };

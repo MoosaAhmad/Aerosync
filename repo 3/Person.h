@@ -3,7 +3,6 @@
 #include<iostream>
 
 using namespace std;
-
 class Person {
 protected:
     string name;
@@ -11,36 +10,33 @@ protected:
     string passwordHash;
     string decrypter()
     {
-        string decrypted="";
+        string decrypted = "";
         for (int i = 0; i < passwordHash.length(); i++)
         {
             decrypted += (char)(passwordHash[i] - i);
         }
         return decrypted;
     }
-    
+
 public:
     string encrypter(string pass)
     {
-        string encrypted="";
+        string encrypted = "";
         for (int i = 0; i < pass.length(); i++)
         {
             encrypted += (char)(pass[i] + i);
         }
         return encrypted;
     }
-    Person(string name, string email, string password) : name(name), email(email)
+    Person(string name, string email, string password,bool encrypted) : name(name), email(email)
     {
-        passwordHash=encrypter(password);
+        if (!encrypted)
+            passwordHash = encrypter(password);
+        else passwordHash = password;
     }
-    bool login(string input)
+    bool login(const string& input)
     {
-        if (input == decrypter())
-        {
-            cout << name << " logged in.\n";
-            return 1;
-        }
-        else return 0;
+        return passwordHash == encrypter(input);
     }
     void logout() {
         cout << name << " logged out.\n";
@@ -53,10 +49,14 @@ public:
     {
         return name;
     }
+    string getemail()
+    {
+        return email;
+    }
     virtual void updatePassword(string newpass)
     {
         passwordHash = encrypter(newpass);
     }
-    virtual void authenticate() = 0;  // pure virtual so now Person is abstract
+    //  virtual void authenticate() = 0;  // pure virtual so now Person is abstract
     virtual ~Person() {}  // virtual destructor cuz its base class
 };

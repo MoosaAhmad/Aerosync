@@ -1,7 +1,9 @@
 #pragma once
 #include "DateTime.h"
-#include "Vector.h";
-#include"Seat.h"
+#include <vector>
+#include "Seat.h"
+#include"Parser.h"
+
 class Flight {
 public:
     enum class FlightStatus {
@@ -12,17 +14,139 @@ public:
         Arrived
     };
 private:
-	int flightId;
-	string source;
-	string destination;
-	datetime departure;
-	datetime arrival;
+    int flightId;
+    string source;
+    string destination;
+    datetime departure;
+    datetime arrival;
     FlightStatus status;
-	Vector<Seat> seats;
+
+    int totalEconomySeats;
+    int totalBusinessSeats;
+
+    double economyPrice;
+    double businessPrice;
+
+    vector<Seat> seats;
 public:
+
+    static string serialize(const Flight& f) {
+        std::string line;
+
+        line += std::to_string(f.flightId) + '|';
+        line += f.source + '|';
+        line += f.destination + '|';
+
+        line += datetime::toString(f.departure) + '|';
+        line += datetime::toString(f.arrival) + '|';
+
+        char tmp = ' ';
+        switch (f.status) {
+        case FlightStatus::Scheduled: tmp = 'S'; break;
+        case FlightStatus::Delayed:   tmp = 'L'; break;
+        case FlightStatus::Cancelled: tmp = 'C'; break;
+        case FlightStatus::Departed:  tmp = 'D'; break;
+        case FlightStatus::Arrived:   tmp = 'A'; break;
+        }
+
+        line.push_back(tmp);
+        line.push_back('|');
+
+        line += std::to_string(f.totalEconomySeats) + '|';
+        line += std::to_string(f.totalBusinessSeats) + '|';
+        line += std::to_string(f.economyPrice) + '|';
+        line += std::to_string(f.businessPrice) + '|';
+
+        // seats contain economy first later business seats
+        for (int i = 0; i < f.totalEconomySeats + f.totalBusinessSeats; i++) {
+            line.push_back(f.seats[i].getIsAvailable() ? 'A' : 'B');
+        }
+        
+        return line;
+    }
+
+
+    static Flight* deserialize(const string& line) {
+        auto slices = Parser::slice(line, '|');
+
+        if (slices.size() != 11)
+            throw runtime_error("invalid flight data format: " + line);
+
+        FlightStatus status = FlightStatus::Scheduled;
+
+        char tmp = slices[5][0];
+        switch (tmp) {
+        case 'S': status = FlightStatus::Scheduled; break;
+        case 'L': status = FlightStatus::Delayed;   break;
+        case 'C': status = FlightStatus::Cancelled; break;
+        case 'D': status = FlightStatus::Departed;  break;
+        case 'A': status = FlightStatus::Arrived;   break;
+        }
+
+        int economySeats = stoi(slices[6]);
+        int businessSeats = stoi(slices[7]);
+
+        Flight* flight = new Flight(
+            stoi(slices[0]),
+            slices[1],
+            slices[2],
+            datetime::fromString(slices[3]),
+            datetime::fromString(slices[4]),
+            economySeats,
+            businessSeats,
+            stod(slices[8]),
+            stod(slices[9]),
+            status
+        );
+
+        string seatString = slices[10];
+
+        int totalSeats = economySeats + businessSeats;
+
+        for (int i = 0; i < totalSeats; i++) {
+            if (seatString[i] == 'B') {
+                flight->seats[i].reserve();
+            }
+        }
+
+        return flight;
+    }
+
     //...........
     // Assignment
     //...........
+    Flight(int flightId, string source, string destination, datetime departure, datetime arrival,
+        int totalEconomySeats, int totalBusinessSeats, double economyPrice, double businessPrice,
+        FlightStatus status = FlightStatus::Scheduled)
+        : flightId(flightId),
+        source(source),
+        destination(destination),
+        departure(departure),
+        arrival(arrival),
+        status(status),
+        totalEconomySeats(totalEconomySeats),
+        totalBusinessSeats(totalBusinessSeats),
+        economyPrice(economyPrice),
+        businessPrice(businessPrice)
+    {
+        generateSeats();
+    }
+
+    Flight(const Flight& other)
+        : flightId(other.flightId),
+        source(other.source),
+        destination(other.destination),
+        departure(other.departure),
+        arrival(other.arrival),
+        status(other.status),
+        seats(other.seats),
+        totalEconomySeats(other.totalEconomySeats),
+        totalBusinessSeats(other.totalBusinessSeats),
+        economyPrice(other.economyPrice),
+        businessPrice(other.businessPrice)
+    {
+    }
+
     Flight& operator = (const Flight& other) {
         if (this != &other) {
             flightId = other.flightId;
@@ -32,6 +156,12 @@ public:
             arrival = other.arrival;
             status = other.status;
             seats = other.seats;
+
+            economyPrice = other.economyPrice;
+            businessPrice = other.businessPrice;
+
+            totalEconomySeats = other.totalEconomySeats;
+            totalBusinessSeats = other.totalBusinessSeats;
         }
         return *this;
     }
@@ -47,12 +177,12 @@ public:
             }
         }
         if (id == -1) return false; // no such seat exist
-      
+
         return  seats[id].reserve();
     }
 
-    Vector<Seat*> getAvailableSeats() {
-        Vector<Seat*>res;
+    vector<Seat*> getAvailableSeats() {
+        vector<Seat*>res;
 
         int sz = seats.size();
         for (int i = 0;i < sz;++i) {
@@ -62,8 +192,9 @@ public:
         }
         return res;
     }
-    Vector<Seat*> getReservedSeats() {
-        Vector<Seat*>res;
+
+    vector<Seat*> getReservedSeats() {
+        vector<Seat*>res;
 
         int sz = seats.size();
         for (int i = 0;i < sz;++i) {
@@ -73,7 +204,17 @@ public:
         }
         return res;
     }
-   
+
+
+
+    void generateSeats() {
+        for (int i = 0;i < totalEconomySeats;i++) {
+            seats.push_back(Seat("E" + to_string(i + 1), Seat::SeatClass::Economy, economyPrice));
+        }
+        for (int i = 0;i < totalBusinessSeats;i++) {
+            seats.push_back(Seat("B" + to_string(i + 1), Seat::SeatClass::Business, businessPrice));
+        }
+    }
     //...........
     //  Getters
     //...........
@@ -100,11 +241,5 @@ public:
         }
         return "Unknown";
     }
-    
-    // to be used by user class
-    void displayStatus()
-    {
-        string temp = statusToString(status);
-        cout << "Status : " << temp << endl;
-    }
+
 };

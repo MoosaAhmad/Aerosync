@@ -1,6 +1,7 @@
 #pragma once
 #include "DateTime.h"
 #include <vector>
+#include<string>
 #include "Seat.h"
 #include"Parser.h"
 
@@ -69,11 +70,18 @@ public:
     static Flight* deserialize(const string& line) {
         auto slices = Parser::slice(line, '|');
 
-        if (slices.size() != 11)
-            throw runtime_error("invalid flight data format: " + line);
-
+        if (slices.size() != 11) {
+            throw std::runtime_error("11 fields were expected but got " + 
+                  std::to_string(slices.size())+
+                " fields");
+        }
         FlightStatus status = FlightStatus::Scheduled;
 
+
+        if (slices[5].empty())
+            throw runtime_error("Empty flight status field");
+
+ 
         char tmp = slices[5][0];
         switch (tmp) {
         case 'S': status = FlightStatus::Scheduled; break;
@@ -81,28 +89,49 @@ public:
         case 'C': status = FlightStatus::Cancelled; break;
         case 'D': status = FlightStatus::Departed;  break;
         case 'A': status = FlightStatus::Arrived;   break;
+        default: throw std::runtime_error("invalid FlightStatus \'" + tmp + '\'');
         }
 
-        int economySeats = stoi(slices[6]);
-        int businessSeats = stoi(slices[7]);
+    
+        int economySeats,businessSeats; 
+        double economyPrice, businessPrice; 
+        try {
+            economySeats = stoi(slices[6]);
+            businessSeats = stoi(slices[7]);
+            economyPrice = stod(slices[8]);
+            businessPrice = stod(slices[9]);
+        }
+        catch (const invalid_argument& e) {
+            throw runtime_error("Invalid numeric data in record: " + string(e.what()));
+        }
+
+        datetime d1, d2;
+        try {
+            d1 = datetime::fromString(slices[3]);
+            d2 = datetime::fromString(slices[4]);
+        }
+        catch (const invalid_argument& e) {
+            throw runtime_error( string(e.what()));
+        }
 
         Flight* flight = new Flight(
-            slices[0],
-            slices[1],
-            slices[2],
-            datetime::fromString(slices[3]),
-            datetime::fromString(slices[4]),
+            slices[0], slices[1], slices[2],
+            d1, d2,
             economySeats,
             businessSeats,
-            stod(slices[8]),
-            stod(slices[9]),
+            economyPrice,
+            businessPrice,
             status
         );
 
         string seatString = slices[10];
 
         int totalSeats = economySeats + businessSeats;
-
+        if (seatString.size() != totalSeats) {
+            throw std::runtime_error(
+            "number of seats and number of Seat Status are inconsistent"
+            );
+        }
         for (int i = 0; i < totalSeats; i++) {
             if (seatString[i] == 'B') {
                 flight->seats[i].reserve();

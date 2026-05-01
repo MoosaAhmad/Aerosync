@@ -137,7 +137,7 @@ class date {
 		case 4:case 6:case 9:case 11:
 			return 30;
 		default:
-			throw runtime_error("invalid month");
+			throw invalid_argument("invalid month");
 		}
 
 	}
@@ -169,11 +169,11 @@ public:
 
 	date(int Day, int Month, int Year) {
 		if (Month < 1 || Month>12)
-			throw runtime_error("invalid month");
+			throw invalid_argument("invalid month");
 		if (Year < 0)
-			throw runtime_error("invalid year");
+			throw invalid_argument("invalid year");
 		if (!isValid_day(Year, Month, Day))
-			throw runtime_error("invalid day");
+			throw invalid_argument("invalid day");
 
 		day = Day;
 		month = Month;
@@ -240,17 +240,17 @@ public:
 	//...............
 	void set_year(int y) {
 		if (y < 0)
-			throw runtime_error("invalid year");
+			throw invalid_argument("invalid year");
 		year = y;
 	}
 	void set_month(int Month) {
 		if (Month < 1 || Month>12)
-			throw runtime_error("invalid month");
+			throw invalid_argument("invalid month");
 		month = Month;
 	}
 	void set_day(int Day) {
 		if (!isValid_day(year, month, Day))
-			throw runtime_error("invalid day");
+			throw invalid_argument("invalid day");
 		day = Day;
 	}
 
@@ -290,23 +290,23 @@ public:
 
 	static date fromString(const string& Date) {
 		if (Date.length() != 10)
-			throw runtime_error("invalid date format");
+			throw invalid_argument("invalid date format");
 
 		if (Date[2] != '-' || Date[5] != '-')
-			throw runtime_error("invalid date format");
+			throw invalid_argument("invalid date format");
 
 
 		for (int i = 0; i < 2; i++)
 			if (Date[i] < '0' || Date[i] > '9')
-				throw runtime_error("invalid day");
+				throw invalid_argument("invalid day");
 
 		for (int i = 3; i < 5; i++)
 			if (Date[i] < '0' || Date[i] > '9')
-				throw runtime_error("invalid month");
+				throw invalid_argument("invalid month");
 
 		for (int i = 6; i < 10; i++)
 			if (Date[i] < '0' || Date[i] > '9')
-				throw runtime_error("invalid year");
+				throw invalid_argument("invalid year");
 
 		// after validation constructing date
 		int d = std::stoi(Date.substr(0, 2));
@@ -437,12 +437,12 @@ public:
 	}
 	static Time fromString(const string& str) {
 		if (str.length() != 5)
-			throw invalid_argument("invalid time format");
+			throw invalid_argument("invalid time format: " + str);
 		if (str[2] != ':')
-			throw invalid_argument("invalid time format");
+			throw invalid_argument("invalid time format: "+ str);
 		for (int i = 0;i < 2;i++)
 			if (str[i] < '0' || str[i]>'9')
-				throw invalid_argument("invalid time format");
+				throw invalid_argument("invalid time format: " + str);
 
 		int H = stoi(str.substr(0, 2));
 		int M = stoi(str.substr(3, 2));
@@ -577,7 +577,7 @@ public:
 	}
 	static datetime fromString(const string& str) {
 		if (str.length() != 16 || str[10] != ' ')
-			throw invalid_argument("invalid datetime format");
+			throw invalid_argument("invalid datetime format: "+ str);
 
 		string dpart = str.substr(0, 10);
 		string tpart = str.substr(11, 5);

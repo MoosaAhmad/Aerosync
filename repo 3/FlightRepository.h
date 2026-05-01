@@ -1,6 +1,5 @@
 #pragma once
 #include<vector>
-//#include"Vector.h"
 #include"Flight.h"
 #include <fstream>
 //........................
@@ -24,12 +23,23 @@ public:
 		if (!file.is_open())
 			throw runtime_error("Error opening file: " + filename);
 
+		int lineNo = 0;
 		string line;
 		while (getline(file, line)) {
+			lineNo++;
 			if (line.empty()) continue;
-			flights.push_back(Flight::deserialize(line));
+			try {
+				flights.push_back(Flight::deserialize(line));
+			}
+			catch (const runtime_error& e) {
+				throw runtime_error(
+					"File: \"" + filename +
+					"\", Line " + std::to_string(lineNo) +
+					": \"" + line +
+					"\" corrupted. Reason: " + e.what()
+				);
+			}
 		}
-		file.close();
 	}
 
 	void save() const {

@@ -14,7 +14,7 @@ public:
         Arrived
     };
 private:
-    int flightId;
+    std::string flightId;
     string source;
     string destination;
     datetime departure;
@@ -33,7 +33,7 @@ public:
     static string serialize(const Flight& f) {
         std::string line;
 
-        line += std::to_string(f.flightId) + '|';
+        line += f.flightId + '|';
         line += f.source + '|';
         line += f.destination + '|';
 
@@ -87,7 +87,7 @@ public:
         int businessSeats = stoi(slices[7]);
 
         Flight* flight = new Flight(
-            stoi(slices[0]),
+            slices[0],
             slices[1],
             slices[2],
             datetime::fromString(slices[3]),
@@ -115,7 +115,7 @@ public:
     //...........
     // Assignment
     //...........
-    Flight(int flightId, string source, string destination, datetime departure, datetime arrival,
+    Flight(std::string flightId, string source, string destination, datetime departure, datetime arrival,
         int totalEconomySeats, int totalBusinessSeats, double economyPrice, double businessPrice,
         FlightStatus status = FlightStatus::Scheduled)
         : flightId(flightId),
@@ -219,7 +219,7 @@ public:
     //  Getters
     //...........
 
-    int getId()              const { return flightId; }
+    std::string getId()      const { return flightId; }
     string getSource()       const { return source; }
     string getDestination()  const { return destination; }
     datetime getDeparture()  const { return departure; }

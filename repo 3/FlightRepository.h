@@ -2,7 +2,6 @@
 #include<vector>
 //#include"Vector.h"
 #include"Flight.h"
-#include"memory.h"
 #include <fstream>
 //........................
 // It owns flights data
@@ -51,7 +50,7 @@ public:
 		flights.clear();
 	}
 
-	Flight* findFlightById(int ID) {
+	Flight* findFlightById(std::string ID) {
 		int sz = flights.size();
 		for (int i = 0;i < sz;++i) {
 			if (flights[i]->getId() == ID) {
@@ -109,7 +108,7 @@ public:
 
 	Flight* getFlightById(const string& id) {
 		for (auto f : flights) {
-			if (f->getId() == std::stoi(id)) return f;
+			if (f->getId() == id) return f;
 		}
 		return nullptr;
 	}
@@ -121,11 +120,24 @@ public:
 	}
 
 	bool updateFlightStatus(const string& id, Flight::FlightStatus status) {
-		Flight* f = findFlightById(stoi(id));
+		Flight* f = findFlightById(id);
 		if (!f) return false;
 
 		f->setStatus(status);
 		return true;
+	}
+	//format: FLG-1  FLG-2  FLG-3 ...
+	std::string getNextId() const {
+		int max = 0;
+
+		for (const auto& f : flights) {
+			std::string id = f->getId();
+
+			int num = std::stoi(id.substr(4));
+
+			if (num > max)  max = num;
+		}
+		return "FLG-" + std::to_string(max + 1);
 	}
 
 };

@@ -5,13 +5,13 @@
 
 class user :public Person
 {
-	int userId;
+    std::string userId;
 	vector<Booking*>history; // just 
 public:
 	//.........
 	// Ctor
 	//.........
-	user(int userId, string name, string email, string password, bool encrypted = false) :
+	user(std::string userId, string name, string email, string password, bool encrypted = false) :
 		Person(name, email, password, encrypted), userId(userId) {
 	}
 	user& operator = (const user& other) {
@@ -27,7 +27,7 @@ public:
 	//.........
 	// Getters
 	//.........
-	int get_userId() const { return userId; };
+	std::string  get_userId() const { return userId; };
 
 	// used while re-establishing links while loading and and establishing
 	void addBooking(Booking* ptr) {

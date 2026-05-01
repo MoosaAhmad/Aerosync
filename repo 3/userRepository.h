@@ -68,7 +68,7 @@ public:
         users.push_back(new user(u));
     }
 
-    bool updateUserPass(int id,const string & newPassword) {
+    bool updateUserPass(std::string  id,const string & newPassword) {
         user* u = nullptr;
         for (auto us : users)if (us->get_userId() == id) { u = us;break; }
         if (u) {
@@ -78,19 +78,33 @@ public:
         return false;
     }
 
+    //format: USR-1  USR-2  USR-3 ...
+    std::string getNextId() const {
+        int max = 0;
+
+        for (const auto& u : users) {
+            std::string id = u->get_userId();
+
+            int num = std::stoi(id.substr(4));
+
+            if (num > max)  max = num;
+        }
+        return "USR-" + std::to_string(max + 1);
+    }
+
 private:
     static string serialize(user* u) {
-        int id = u->get_userId();
+        std::string  id = u->get_userId();
         string name = u->getname();
         string email = u->getemail();
         string hashed = u->getHash();
 
         string tmp;
 
-        int len = to_string(id).size() + name.size() + email.size() + hashed.size() + 3;
+        int len = id.size() + name.size() + email.size() + hashed.size() + 3;
 
         tmp.reserve(len);
-        tmp += to_string(id);
+        tmp += id;
         tmp.push_back('|');
         tmp += name;
         tmp.push_back('|');
@@ -107,7 +121,7 @@ private:
         if (s.size() < 4)
             throw runtime_error("Invalid user line: " + line);
 
-        return new user(stoi(s[0]), s[1], s[2], s[3],true);
+        return new user(s[0], s[1], s[2], s[3],true);
     }
 };
 //....................

@@ -71,6 +71,21 @@ public:
 
     vector<Booking*>share(){ return bookings; }
 
+
+    //format: BKN-1  BKN-2  BKN-3 ...
+    std::string getNextId() const {
+        int max = 0;
+
+        for (const auto& f : bookings) {
+            std::string id = f->getBookingId();  
+
+            int num = std::stoi(id.substr(4));
+
+            if (num > max)  max = num;
+        }
+        return "BKN-" + std::to_string(max + 1);
+    }
+
 private:
     static std::string serialize(Booking& b) {
         string line;

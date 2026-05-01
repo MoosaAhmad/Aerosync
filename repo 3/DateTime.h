@@ -1,5 +1,6 @@
 #pragma once
-
+#include<iostream>
+#include<string>
 using namespace std;
 class duration {
 	bool negative;
@@ -13,7 +14,7 @@ public:
 	duration() :minutes(0), hours(0), days(0), negative(false) {};
 	duration(int d, int h, int m, bool neg = false) {
 		if (d < 0 || h < 0 || m < 0)
-			throw invalid_argument("invalid duration");
+			throw std::invalid_argument("invalid duration");
 
 		negative = neg;
 
@@ -41,7 +42,7 @@ public:
 	static duration fromDays(int DAYS) {
 		duration tmp;
 		tmp.negative = DAYS < 0;
-		tmp.days = abs(DAYS);
+		tmp.days = std::abs(DAYS);
 		return tmp;
 	}
 	static duration fromHours(int hrs) {
@@ -106,7 +107,7 @@ public:
 	string toString() const {
 		string tmp = negative ? "-" : "";
 
-		return tmp + to_string(days) + "d " + to_string(hours) + "h " + to_string(minutes) + "m";
+		return tmp + std::to_string(days) + "d " + std::to_string(hours) + "h " + std::to_string(minutes) + "m";
 	}
 };
 
@@ -308,9 +309,9 @@ public:
 				throw runtime_error("invalid year");
 
 		// after validation constructing date
-		int d = stoi(Date.substr(0, 2));
-		int m = stoi(Date.substr(3, 2));
-		int y = stoi(Date.substr(6, 4));
+		int d = std::stoi(Date.substr(0, 2));
+		int m = std::stoi(Date.substr(3, 2));
+		int y = std::stoi(Date.substr(6, 4));
 
 		return date(d, m, y);
 	}
@@ -552,6 +553,7 @@ public:
 	int get_year()    const { return d.get_year(); }
 	int get_month()   const { return d.get_month(); }
 	int get_day()     const { return d.get_day(); }
+	date get_date() { return d; }
 	//............
 	// Setters
 	//............

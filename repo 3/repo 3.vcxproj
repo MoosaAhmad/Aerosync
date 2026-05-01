@@ -123,7 +123,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Booking.cpp" />
     <ClCompile Include="Profit Calculator.h" />
+    <ClCompile Include="Receipt.cpp" />
     <ClCompile Include="Test file.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="User.h" />
@@ -143,6 +145,12 @@
     <ClInclude Include="Seat.h" />
     <ClInclude Include="userRepository.h" />
     <ClInclude Include="Vector.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="bookings.txt" />
+    <Text Include="flights.txt" />
+    <Text Include="Payments.txt" />
+    <Text Include="users.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

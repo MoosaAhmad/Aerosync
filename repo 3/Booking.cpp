@@ -1,17 +1,14 @@
 #include "Booking.h"
-#include "User.h"
-#include "Flight.h"
-#include "Seat.h"
 #include <string>
 
-Booking::Booking(std::string bookingId, std::string userid, std::string flightid, std::string seatNo, datetime bookingDate, std::string stat)
+Booking::Booking(std::string bookingId, std::string userid, std::string flightid, std::string seatNo, datetime bookingDate, Booking::BookingStatus stat)
 	:bookingId(bookingId), userId(userId), flightId(flightid), seatNo(seatNo),bookingDate(bookingDate),status(stat) {
 };
 //..........
 // Getters
 //..........
 
-std::string  Booking::getStatus()     { return status; }
+Booking::BookingStatus Booking::getStatus()     { return status; }
 std::string  Booking::getFlightId()   { return flightId; }
 std::string  Booking::getUserId()     { return userId;}
 std::string  Booking::getSeatNumber() { return seatNo;}

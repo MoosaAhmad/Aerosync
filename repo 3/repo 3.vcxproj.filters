@@ -27,6 +27,12 @@
     <ClCompile Include="User.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="Booking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Receipt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DateTime.h">
@@ -71,5 +77,19 @@
     <ClInclude Include="Receipt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="bookings.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="flights.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="Payments.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="users.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

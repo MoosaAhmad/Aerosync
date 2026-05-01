@@ -1,13 +1,13 @@
 #pragma once
 #include "Person.h"
-class Admin:protected Person
+class Admin:public Person
 {
-	string adminId
-	int accessLevel
+	string adminId;
+	//int accessLevel;
 public:
-	addFlight()
+	/*addFlight()
 	removeFlight()
 	calcProfitLoss()
 	viewAllBookings()
-	openHelpPage()
+	openHelpPage()*/
 };

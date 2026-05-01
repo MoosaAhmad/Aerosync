@@ -48,7 +48,7 @@ public:
     }
 
     Booking* findBookedSeat(const string& FlightId,const string& seatNo) {
-        for (auto &b : bookings) if (b->getFlightId() == FlightId && b->getSeatNumber() == seatNo && b->getStatus()=="booked") return b;
+        for (auto &b : bookings) if (b->getFlightId() == FlightId && b->getSeatNumber() == seatNo && b->getStatus()== Booking::BookingStatus::Booked) return b;
         return nullptr;
     }
 
@@ -81,8 +81,8 @@ private:
         line += b.getFlightId();   line.push_back('|');
         line += b.getSeatNumber(); line.push_back('|');
         line += datetime::toString(b.getBookingDate()); line.push_back('|');
-        line += b.getStatus();
-
+        Booking::BookingStatus st = b.getStatus();
+        line.push_back(st == Booking::BookingStatus::Booked ? 'B' : 'C');
         return line;
     }
 
@@ -90,9 +90,11 @@ private:
         auto slices = Parser::slice(line, '|');
 
         if (slices.size() != 6) throw runtime_error("invalid format: " + line);
-
+        char st = slices[5][0];
+        if(st!='B' && st!='C') throw runtime_error("invalid format: " + line);// booking status is invalid
+        Booking::BookingStatus bs = (st == 'B') ? Booking::BookingStatus::Booked : Booking::BookingStatus::Cancelled;
         return new Booking(slices[0], slices[1], slices[2],
-            slices[3], datetime::fromString(slices[4]), slices[5]
+            slices[3], datetime::fromString(slices[4]), bs
         );
     }
 };

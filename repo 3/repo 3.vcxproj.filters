@@ -27,12 +27,6 @@
     <ClCompile Include="User.h">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="Booking.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Receipt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DateTime.h">

@@ -2,7 +2,7 @@
 #include <string>
 
 Booking::Booking(std::string bookingId, std::string userid, std::string flightid, std::string seatNo, datetime bookingDate, Booking::BookingStatus stat)
-	:bookingId(bookingId), userId(userId), flightId(flightid), seatNo(seatNo),bookingDate(bookingDate),status(stat) {
+	:bookingId(bookingId), userId(userid), flightId(flightid), seatNo(seatNo),bookingDate(bookingDate),status(stat) {
 };
 //..........
 // Getters

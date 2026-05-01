@@ -131,12 +131,17 @@
   <ItemGroup>
     <ClInclude Include="Admin.h" />
     <ClInclude Include="Booking.h" />
+    <ClInclude Include="BookingRepository.h" />
     <ClInclude Include="DateTime.h" />
     <ClInclude Include="Flight.h" />
+    <ClInclude Include="FlightRepository.h" />
     <ClInclude Include="Payment.h" />
+    <ClInclude Include="PaymentRepository.h" />
     <ClInclude Include="Person.h" />
     <ClInclude Include="Receipt.h" />
+    <ClInclude Include="ReceiptRepository.h" />
     <ClInclude Include="Seat.h" />
+    <ClInclude Include="userRepository.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

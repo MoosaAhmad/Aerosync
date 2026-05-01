@@ -10,13 +10,13 @@ private:
 
 public:
     Receipt();
-   
+
     Receipt(const std::string& rId,
         const std::string& bId,
         const std::string& pId);
 
     Receipt(const Receipt& other);
- 
+
     Receipt& operator=(const Receipt& other);
 
     std::string getReceiptId() const;

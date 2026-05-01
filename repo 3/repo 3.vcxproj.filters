@@ -53,8 +53,23 @@
     <ClInclude Include="Booking.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BookingRepository.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FlightRepository.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PaymentRepository.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReceiptRepository.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="userRepository.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
     <ClInclude Include="Receipt.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

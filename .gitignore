@@ -251,6 +251,17 @@ orleans.codegen.cs
 # RIA/Silverlight projects
 Generated_Code/
 
+# Qt Creator specific files
+*.user
+*.user.*
+
+# CMake / Build folders
+build*/
+out/
+.vs/
+*.sublime-project
+*.sublime-workspace
+
 # Backup & report files from converting an old project file
 # to a newer Visual Studio version. Backup files are not needed,
 # because we have git ;-)

@@ -33,10 +33,22 @@ public:
         if (!file.is_open())
             throw runtime_error("Cannot open file: " + filename);
 
+        int lineNo = 0;
         string buffer;
         while (getline(file, buffer)) {
+            lineNo++;
             if (buffer.empty()) continue;
-            users.push_back(deserializeUser(buffer));
+            try {
+                users.push_back(deserializeUser(buffer));
+            }
+            catch (const runtime_error& e) {
+                throw runtime_error(
+                    "File: \"" + filename +
+                    "\", Line " + std::to_string(lineNo) +
+                    ": \"" + buffer +
+                    "\" corrupted. Reason: " + e.what()
+                );
+            }
         }
     }
 
@@ -118,9 +130,11 @@ private:
     static user* deserializeUser(const string& line) {
         auto s = Parser::slice(line, '|');
 
-        if (s.size() < 4)
-            throw runtime_error("Invalid user line: " + line);
-
+        if (s.size() != 4) {
+            throw std::runtime_error("4 fields were expected but got " +
+                std::to_string(s.size()) +
+                " fields");
+        }
         return new user(s[0], s[1], s[2], s[3],true);
     }
 };

@@ -19,10 +19,23 @@ public:
         if (!file.is_open())
             throw runtime_error("error opening file: " + filename);
 
+        int lineNo = 0;
         string buffer;
         while (getline(file, buffer)) {
+            lineNo++;
             if (buffer.empty()) continue;
-            bookings.push_back(deserialize(buffer));
+            try {
+                bookings.push_back(deserialize(buffer));
+            }
+            catch (const runtime_error& e) {
+                throw runtime_error(
+                    "File: \"" + filename +
+                    "\", Line " + std::to_string(lineNo) +
+                    ": \"" + buffer +
+                    "\" corrupted. Reason: " + e.what()
+                );
+            }
+
         }
     }
 
@@ -104,12 +117,32 @@ private:
     static Booking* deserialize(const string& line) {
         auto slices = Parser::slice(line, '|');
 
-        if (slices.size() != 6) throw runtime_error("invalid format: " + line);
+        if (slices.size() != 6) {
+            throw std::runtime_error("6 fields were expected but got " +
+                std::to_string(slices.size()) +
+                " fields");
+
+        }
+        if (slices[5].empty())
+            throw runtime_error("Empty Booking status field");
+
         char st = slices[5][0];
-        if(st!='B' && st!='C') throw runtime_error("invalid format: " + line);// booking status is invalid
+        if(st!='B' && st!='C') 
+            throw runtime_error("invalid Booking status \'" + st+'\'');
+
         Booking::BookingStatus bs = (st == 'B') ? Booking::BookingStatus::Booked : Booking::BookingStatus::Cancelled;
+
+
+        datetime d1;
+        try {
+            d1 = datetime::fromString(slices[4]);
+        }
+        catch (const invalid_argument& e) {
+            throw runtime_error(string(e.what()));
+        }
+
         return new Booking(slices[0], slices[1], slices[2],
-            slices[3], datetime::fromString(slices[4]), bs
+            slices[3], d1, bs
         );
     }
 };

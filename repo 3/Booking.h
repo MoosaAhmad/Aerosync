@@ -14,7 +14,7 @@ protected:
 	BookingStatus status;
 public:
 	Booking(std::string bookingId, std::string userid, std::string flightid, std::string seatNo, datetime bookingTime, BookingStatus stat)
-		:bookingId(bookingId), userId(userid), flightId(flightid), seatNo(seatNo), bookingDate(bookingDate), status(stat) {
+		:bookingId(bookingId), userId(userid), flightId(flightid), seatNo(seatNo), bookingDate(bookingTime), status(stat) {
 	};
 	
 	std::string getBookingId() { return bookingId; }

@@ -1,5 +1,5 @@
 #pragma once
-
+#include<iostream>
 class Seat {
 public:
     enum class SeatClass{

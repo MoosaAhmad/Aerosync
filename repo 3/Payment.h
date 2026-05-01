@@ -1,5 +1,7 @@
 #pragma once
-
+#include<string>
+#include"DateTime.h"
+#include"Receipt.h"
 class Booking; // forward declaration to avoid circular include
 class Payment {
 protected:
@@ -48,7 +50,7 @@ public:
         if (verifyPayment()) {
             string rId = "REC-" + transactionId;
                 
-          DateTime currentTime;
+          datetime currentTime;
 
             // Creating a "Receipt" class object.
             // We use 'this' to pass the current Payment object as a pointer (Payment*)

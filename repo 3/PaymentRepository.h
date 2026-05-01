@@ -1,5 +1,6 @@
 #pragma once
 #include"Payment.h"
+#include"Vector.h"
 #include<vector>
 #include<fstream>
 #include<string>

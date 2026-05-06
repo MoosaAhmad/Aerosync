@@ -52,7 +52,7 @@ set(HEADERS
 )
 
 # Create executable
-add_executable(test
+add_executable(AeroSync
     ${SOURCES}
     ${HEADERS}
 )
